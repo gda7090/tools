@@ -1,0 +1,3 @@
+cp /NJPROJ2/CANCER/Proj/WES.C101SC18071889.dongwusuo100li.20180816/C101SC18071889_B1_20180816/AfterSale/ExtractBAM/ExtractBAM.sh .
+cp /NJPROJ2/CANCER/share/Module/AfterSale/ExtractBam/code/run.sh .
+cp /NJPROJ2/CANCER/share/Module/AfterSale/ExtractBam/code/bam2html.py .

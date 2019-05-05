@@ -1,0 +1,118 @@
+#!/usr/bin/env Rscript
+suppressMessages({
+library(edgeR)
+library(argparser)})
+
+argv <- arg_parser('')
+argv <- add_argument(argv,"--count", help="the count file")
+argv <- add_argument(argv,"--condition", help="the condition file")
+argv <- add_argument(argv,"--cpname", help="the compare name")
+argv <- add_argument(argv,"--design", help="the design of experiment")
+argv <- add_argument(argv,"--fc", help="the foldchange value",type='numeric')
+argv <- add_argument(argv,"--pvalue", help="the p value",type='numeric')
+argv <- add_argument(argv,"--padj", help="the p adjust value",type='numeric')
+argv <- add_argument(argv,"--anno", help="the gene annotation file")
+argv <- add_argument(argv,"--outdir", help="the output dir")
+argv <- parse_args(argv)
+
+count <- argv$count
+condition <- argv$condition
+cpname <- argv$cpname
+design <- argv$design
+fc <- argv$fc
+p <- argv$pvalue
+q <- argv$padj
+anno <- argv$anno
+outdir <- argv$outdir
+
+compares <- strsplit(cpname,'vs')[[1]]
+condition <- read.delim(condition,header=T,sep='\t')
+groupdata <- data.frame()
+for (i in compares) {
+    groupdata <- rbind(groupdata,condition[which(as.character(condition$group) %in% i),])}
+group <- as.character(unique(groupdata$group))
+groupdata$group <- factor(groupdata$group,levels=group)
+rownames(groupdata) <- as.character(groupdata$sample)
+
+count <- read.delim(count,header=TRUE,sep=',',row.names=1)
+countdata <- subset(count,select=rownames(groupdata))
+countdata <- countdata[rowSums(countdata)>1,]
+countdata <- round(countdata)
+
+y <- DGEList(counts=countdata,group=groupdata$group)
+y <- calcNormFactors(y)
+if (design=='normal'|design=='multi') {designs <- model.matrix(~groupdata$group)}
+if (design=='batch'|design=='pair'|design=='blocking') {designs <- model.matrix(~groupdata$type+groupdata$group)}
+rownames(designs) <- colnames(y)
+
+if (design=='normal') {
+    if (table(groupdata$group)[[compares[1]]]+table(groupdata$group)[[compares[2]]]>2) {
+        y <- estimateCommonDisp(y)
+        y <- estimateTagwiseDisp(y)
+        exact <- exactTest(y,pair=c(compares[2],compares[1]))
+        result <- topTags(exact,n=NULL,sort.by='none')}
+
+    if (table(groupdata$group)[[compares[1]]]+table(groupdata$group)[[compares[2]]]==2) {
+        exact <- exactTest(y, pair=c(compares[2],compares[1]),dispersion=0.2^2)
+        result <- topTags(exact,n=NULL,sort.by='none')
+        y <- equalizeLibSizes(y)}}
+
+if (design=='batch'|design=='pair'|design=='multi'|design=='blocking') {
+        y <- equalizeLibSizes(y)
+        y <- estimateGLMCommonDisp(y,designs)
+        y <- estimateGLMTrendedDisp(y,designs)
+        y <- estimateGLMTagwiseDisp(y,designs)
+
+        fit <- glmFit(y, designs)
+        if (design=='batch'|design=='pair') {lrt <- glmLRT(fit)}
+	if (design=='multi') {lrt <- glmLRT(fit,coef=2:ncol(designs))}
+	if (design=='blocking') {lrt <- glmLRT(fit,coef=(ncol(designs)-1):ncol(designs))}
+	result <- topTags(lrt,n=NULL,sort.by='none') }
+
+counts <- y$pseudo.counts
+counts <- counts[rownames(result),]
+meancounts <- data.frame(row.names=rownames(counts))
+for (i in compares) {
+    samples <- as.character(groupdata[which(as.character(groupdata$group)==i),]$sample)
+    if (length(samples)>1) {
+        meancounts[,i] <- rowMeans(counts[,samples])
+    } else {
+        meancounts[,i] <- counts[,samples]}
+    }
+result <- cbind(ID=rownames(result),as.data.frame(meancounts),as.data.frame(result))
+if (!is.na(anno)) {
+    anno_frame <- read.delim(anno,header=TRUE,sep='\t',row.names=1)
+    result <- cbind(result,anno_frame[as.character(result$ID),])}
+
+if (design=='normal') {result <- subset(result,select=-logCPM)}
+if (design!='normal') {result <- subset(result,select=-c(logCPM,LR))}
+if ( design!='multi' & design!='blocking') {names(result)[names(result)=="logFC"] <- 'log2FoldChange'}
+
+names(result)[names(result)=="PValue"] <- 'pvalue'
+names(result)[names(result)=="FDR"] <- 'padj'
+result$padj[is.na(result$padj)]  <- 1
+result <- result[order(result$pvalue),]
+
+if (design!='multi' & design!='blocking') {
+    if (is.na(p)) {
+        ALL <- subset(result,padj <= q & abs(log2FoldChange) >= log(fc,2))
+        UP <- subset(ALL,log2FoldChange > log(fc,2))
+        DOWN <- subset(ALL,log2FoldChange < -log(fc,2))}
+    if (is.na(q)) {
+        ALL <- subset(result,pvalue <= p & abs(log2FoldChange) >= log(fc,2))
+        UP <- subset(ALL,log2FoldChange > log(fc,2))
+        DOWN <- subset(ALL,log2FoldChange < -log(fc,2))}}
+
+if (design=='multi'|design=='blocking') {
+    if (is.na(p)) {
+        ALL <- subset(result,padj <= q)}
+    if (is.na(q)) {
+        ALL <- subset(result,pvalue <= p)}}
+
+
+write.table(result,file=paste(outdir,'/',cpname,'_deg.txt',sep=''),sep='\t',quote=F,row.names=F)
+write.table(ALL,file=paste(outdir,'/',cpname,'_deg_all.txt',sep=''),sep='\t',quote=F,row.names=F)
+
+if (design!='multi' & design!='blocking') {
+    write.table(UP,file=paste(outdir,'/',cpname,'_deg_up.txt',sep=''),sep='\t',quote=F,row.names=F)
+    write.table(DOWN,file=paste(outdir,'/',cpname,'_deg_down.txt',sep=''),sep='\t',quote=F,row.names=F)}
