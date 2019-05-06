@@ -32,20 +32,20 @@ keggid=pipeline+'/config/keggid.txt'
 abbr=''
 if species=='mm10':
 	abbr='mmu'
-	go='/NJPROJ1/RNA/database/genome/Animal/Mus_musculus/Mus_musculus_Ensemble_90/Mus_musculus_Ensemble_90_go.txt'
-	kegg='/NJPROJ1/RNA/database/genome/Animal/Mus_musculus/Mus_musculus_Ensemble_90/Mus_musculus_Ensemble_90_mmu_kegg.txt'
-	keggdir='/NJPROJ1/RNA/database/kegg/'+abbr
-	tf='/NJPROJ1/RNA/database/genome/Animal/Mus_musculus/Mus_musculus_Ensemble_90/Mus_musculus_Ensemble_90_tf.txt'
-	ppi='/NJPROJ1/RNA/database/genome/Animal/Mus_musculus/Mus_musculus_Ensemble_90/Mus_musculus_Ensemble_90_10090_ppi.txt'
+	go='Mus_musculus_Ensemble_90/Mus_musculus_Ensemble_90_go.txt'
+	kegg='Mus_musculus_Ensemble_90/Mus_musculus_Ensemble_90_mmu_kegg.txt'
+	keggdir='database/kegg/'+abbr
+	tf='Mus_musculus_Ensemble_90/Mus_musculus_Ensemble_90_tf.txt'
+	ppi='Mus_musculus_Ensemble_90/Mus_musculus_Ensemble_90_10090_ppi.txt'
 	taxon='10090'
 
 if species=='GRCh38':
 	abbr='hsa'
-	go='/NJPROJ1/RNA/database/genome/Animal/Homo_sapiens/Homo_sapiens_Ensemble_90/Homo_sapiens_Ensemble_90_go.txt'
-	kegg='/NJPROJ1/RNA/database/genome/Animal/Homo_sapiens/Homo_sapiens_Ensemble_90/Homo_sapiens_Ensemble_90_hsa_kegg.txt'
-	keggdir='/NJPROJ1/RNA/database/kegg/'+abbr
-	tf='/NJPROJ1/RNA/database/genome/Animal/Homo_sapiens/Homo_sapiens_Ensemble_90/Homo_sapiens_Ensemble_90_tf.txt'
-	ppi='/NJPROJ1/RNA/database/genome/Animal/Homo_sapiens/Homo_sapiens_Ensemble_90/Homo_sapiens_Ensemble_90_9606_ppi.txt'
+	go='Homo_sapiens/Homo_sapiens_Ensemble_90/Homo_sapiens_Ensemble_90_go.txt'
+	kegg='Homo_sapiens_Ensemble_90/Homo_sapiens_Ensemble_90_hsa_kegg.txt'
+	keggdir='database/kegg/'+abbr
+	tf='Homo_sapiens_Ensemble_90/Homo_sapiens_Ensemble_90_tf.txt'
+	ppi='Homo_sapiens_Ensemble_90/Homo_sapiens_Ensemble_90_9606_ppi.txt'
 	taxon='9606'
 
 
