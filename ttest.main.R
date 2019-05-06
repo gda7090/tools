@@ -67,8 +67,8 @@ if(!file.exists(outdir)){
 
 groupnames<-unlist (strsplit(opt$vs,",|;",fixed=F))
 Pairs<-unlist(strsplit(opt$vs,";",fixed=T))
-#source ("/BJWORK/GR/wangxiaohong/Script/MetaStat.Test/Step02.Test/ddaf3.R") ##
-source("/NJPROJ2/MICRO/share/Full_length_16S_pipeline/Full_length_16S_pipeline_V1.0/lib/05.Statistic/lib/t.wilcox.R.lib/t.test.sub.R") #add by hanyuqiao
+#source ("Script/MetaStat.Test/Step02.Test/ddaf3.R") ##
+source("t.wilcox.R.lib/t.test.sub.R") #add by hanyuqiao
 Level<-c("class","family","genus","order","phylum" ,"species")
 names(Level)<-c("c","f","g","o","p","s")
 group<-read.table(group.file,sep="\t",header=F)
