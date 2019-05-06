@@ -27,13 +27,13 @@ for eachS in samplelist2:
 	os.system('mkdir -p %s/CellRanger/%s' %(dir,eachS))
 
 	if species=="GRCh38" and transcriptome == None:
-		transcriptome='/NJPROJ2/RNA_S/personal_dir/lindan/GRCh38_premrna/GRCh38_premrna'
-		annotation='/NJPROJ1/RNA/database/genome/GRCh38/GRCh38_gene.txt'
+		transcriptome='GRCh38_premrna/GRCh38_premrna'
+		annotation='database/genome/GRCh38/GRCh38_gene.txt'
 	if species=="mm10" and transcriptome == None:
-		transcriptome='/NJPROJ2/RNA/database/10X_reference/refdata-cellranger-mm10-1.2.0'
-		annotation='/NJPROJ1/RNA/database/genome/GRCm38/GRCm38_gene.txt'
+		transcriptome='database/10X_reference/refdata-cellranger-mm10-1.2.0'
+		annotation='database/genome/GRCm38/GRCm38_gene.txt'
 	if species=="Dr" and transcriptome == None:
-		transcriptome="/NJPROJ2/RNA/database/10X_reference/Danio_rerio/Danio_rerio"
+		transcriptome="database/10X_reference/Danio_rerio/Danio_rerio"
 		
 	#ln -s cleandata + cellranger
 	cellranger=open(dir+'/CellRanger/'+eachS+'/'+eachS+'_cell.sh','w+')
@@ -43,7 +43,7 @@ for eachS in samplelist2:
 	cellranger.write('			--transcriptome=%s \\\n' %(transcriptome))
 	cellranger.write('			--fastqs=%s/QC/%s/clean \\\n' %(dir,eachS))
 	cellranger.write('			--sample=%s \\\n\n' %(eachS))
-	cellranger.write('/NJPROJ2/RNA_S/software/cellranger-2.2.0/cellranger  mat2csv %s/CellRanger/%s/%s/outs/filtered_gene_bc_matrices  %s/CellRanger/%s/%s/outs/%s_gene_bar.csv_temp\n' %(dir,eachS,eachS,dir,eachS,eachS,eachS))	
-	cellranger.write('perl /NJPROJ2/RNA_S/pipeline/Advanced/add_name/cbind_rpkm_genename.pl %s/CellRanger/%s/%s/outs/%s_gene_bar.csv_temp %s %s/CellRanger/%s/%s/outs/%s_gene_bar.csv\n' %(dir,eachS,eachS,eachS,annotation,dir,eachS,eachS,eachS))
+	cellranger.write('software/cellranger-2.2.0/cellranger  mat2csv %s/CellRanger/%s/%s/outs/filtered_gene_bc_matrices  %s/CellRanger/%s/%s/outs/%s_gene_bar.csv_temp\n' %(dir,eachS,eachS,dir,eachS,eachS,eachS))	
+	cellranger.write('perl pipeline/Advanced/add_name/cbind_rpkm_genename.pl %s/CellRanger/%s/%s/outs/%s_gene_bar.csv_temp %s %s/CellRanger/%s/%s/outs/%s_gene_bar.csv\n' %(dir,eachS,eachS,eachS,annotation,dir,eachS,eachS,eachS))
 	cellranger.write('rm %s/CellRanger/%s/%s/outs/%s_gene_bar.csv_temp\n' %(dir,eachS,eachS,eachS))
 
