@@ -12,8 +12,8 @@ parser.add_argument('-n', '--Nsample', help='Normal Sample Name, default None', 
 parser.add_argument('-s', '--seq_source', help='WGS, WES or other, default: WGS', default='WGS')
 parser.add_argument('-p', '--platform', help='Platform for data generation, Hiseq2000, HiseqX, SNParray, ..., default HiseqX', default='HiseqX')
 parser.add_argument('-f', '--dbsnp-flag', help='The flag for dbSNP annotation in VCF INFO column, default snp138', default='snp138')
-parser.add_argument('-g', '--geneinfo', help='gene_name & Entrez_Gene_Id file, default:/PUBLIC/database/HUMAN/AnnotationDB/Homo_sapiens.gene_info',default='/PUBLIC/database/HUMAN/AnnotationDB/Homo_sapiens.gene_info')
-parser.add_argument('-r', '--refseq', help='Refseq bed file, default:/PUBLIC/database/HUMAN/AnnotationDB/annovar_v2/hg19_refGene.txt',default='/PUBLIC/database/HUMAN/AnnotationDB/annovar_v2/hg19_refGene.txt')
+parser.add_argument('-g', '--geneinfo', help='gene_name & Entrez_Gene_Id file, default:/Homo_sapiens.gene_info',default='/Homo_sapiens.gene_info')
+parser.add_argument('-r', '--refseq', help='Refseq bed file, default:/annovar_v2/hg19_refGene.txt',default='/annovar_v2/hg19_refGene.txt')
 parser.add_argument('-o', '--output', help='Output MAF file', required=True)
 parser.add_argument('-x', '--infos', help='Info field for append to output', default=None)
 

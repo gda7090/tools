@@ -133,7 +133,7 @@ for eachC in cluster_list2:
 		Step1Sh.write('mv %s/Reactome/%s/%s/%s/%s_Reactome_enrich_trans.txt %s/Reactome/%s/%s/%s/%s_Reactome_enrich.txt\n'  %(outdir,sample,eachC,eachID,eachID,outdir,sample,eachC,eachID,eachID))
 		Step1Sh.write('mv %s/Reactome/%s/%s/%s/%s_Reactome_enrich_significant_trans.txt  %s/Reactome/%s/%s/%s/%s_Reactome_enrich_significant.txt\n' %(outdir,sample,eachC,eachID,eachID,outdir,sample,eachC,eachID,eachID))
 		Step1Sh.write('%s/bin/get_tf_anno --tf %s --diffgene  %s/Cluster/%s/%s/%s.xls  --outfile  %s/TF/%s/%s/%s/%s_tf.xls\n'  %(pipeline,tf,outdir,sample,eachC,eachID,outdir,sample,eachC,eachID,eachID))
-		Step1Sh.write('%s/bin/PPI --ppi %s  --taxon %s  --stringdb /NJPROJ1/RNA/database/string/%s  --diffgene %s/Cluster/%s/%s/%s.xls --prefix  %s/PPI/%s/%s/%s/%s\n' %(pipeline,ppi,taxon,taxon,outdir,sample,eachC,eachID,outdir,sample,eachC,eachID,eachID))
+		Step1Sh.write('%s/bin/PPI --ppi %s  --taxon %s  --stringdb string/%s  --diffgene %s/Cluster/%s/%s/%s.xls --prefix  %s/PPI/%s/%s/%s/%s\n' %(pipeline,ppi,taxon,taxon,outdir,sample,eachC,eachID,outdir,sample,eachC,eachID,eachID))
 
 Step1Sh.close()
 os.system('sh '+root_dir+'/'+sample+'_enrich_step2.sh')

@@ -39,7 +39,7 @@ for eachS in samplelist2:
 	cellranger=open(dir+'/CellRanger/'+eachS+'/'+eachS+'_cell.sh','w+')
 #	cellranger.write('ln -s %s/QC/%s/%s_S1_L001_R1_001.fastq.gz  %s/QC/%s/cleandata/\n' %(dir,eachS,eachS,dir,eachS))
 #	cellranger.write('ln -s %s/QC/%s/%s_S1_L001_R2_001.fastq.gz %s/QC/%s/cleandata/\n\n' %(dir,eachS,eachS,dir,eachS))
-	cellranger.write('/NJPROJ2/RNA_S/software/cellranger-2.2.0/cellranger  count --id=%s \\\n' %(eachS))
+	cellranger.write('cellranger-2.2.0/cellranger  count --id=%s \\\n' %(eachS))
 	cellranger.write('			--transcriptome=%s \\\n' %(transcriptome))
 	cellranger.write('			--fastqs=%s/QC/%s/clean \\\n' %(dir,eachS))
 	cellranger.write('			--sample=%s \\\n\n' %(eachS))

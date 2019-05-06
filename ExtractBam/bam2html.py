@@ -104,7 +104,7 @@ def bam2html(paras):
 	path_cun('/'.join(filename.split('/')[0:-1]))
 	Code='''samtools view -h -b -S  %s %s > %s
 samtools index %s
-perl /NJPROJ2/CANCER/share/Module/AfterSale/ExtractBam/code/bam2html.pl \\
+perl ExtractBam/code/bam2html.pl \\
 	-r %s \\
 	-d %s \\
 	--range %s \\
