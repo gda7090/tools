@@ -1,7 +1,7 @@
 args <- commandArgs(T)
 if(length(args) < 2){
     cat("usage: <input: /fullPath/to/meanAdds.list> <output: combine.xls>\n")
-    cat ("Example: /NJPROJ2/MICRO/PROJ/yangfenglong/software/miniconda3/lib/R/bin/Rscript /path/to/meanAdds.list  combine.xls\n")
+    cat ("Example: Rscript /path/to/meanAdds.list  combine.xls\n")
     quit("no")
 }
 
